@@ -8,6 +8,7 @@
 import logging
 import os
 import sys
+import torch
 
 from feature_utils import get_path_iterator, dump_feature
 
@@ -33,7 +34,13 @@ def main(
         max_chunk: int,
         use_cpu: bool = False
 ):
-    device = "cpu" if use_cpu else "cuda"
+    if torch.cuda.is_available():
+        device="cuda"
+    else:
+        device = "cpu"
+
+    # device = "cpu" if use_cpu else "cuda"
+    print("device:", device)
 
     # some checks
     if model_type in ["hubert", "data2vec"]:
